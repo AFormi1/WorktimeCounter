@@ -14,16 +14,20 @@ namespace WorkingtimeCounter
         #region Auto Clock
 
         public double TgtHours { get; set; } = 0; //in hours
-        public double TgtBreak { get; set; } = 1; //in minutes
-        public double TgtBreakSec { get; set; } = 0; //in Seconds
+        public double TgtBreakMinutes { get; set; } = 0; //in minutes
+        public double TgtBreakSeconds { get; set; } = 10; //in Seconds
         public double ProgressValue { get; set; } = 0;
         public bool Reset { get; set; } = false;
+        private bool mFinished = false;
+
         private string mClockValue;
         public string ClockValue { get => mClockValue; set { mClockValue = value; OnPropertyChanged(); } }
 
-       // private double mImageRotationLeft;
-        public double ImageRotationLeft { get; set; }// => mImageRotationLeft; set { mImageRotationLeft = value; OnPropertyChanged(); } }
-        public double ImageRotationRight { get; set; }// => mImageRotationLeft; set { mImageRotationLeft = value; OnPropertyChanged(); } }
+        // private double mImageRotationLeft;
+        public double ImageRotationLeft { get; set; }
+        public double ImageRotationRight { get; set; }
+        public double ImageScale { get; set; } = 1;
+        private double mScaleHelper = 0.05f;
 
 
 
@@ -36,7 +40,7 @@ namespace WorkingtimeCounter
         {
             DateTime ActTime = DateTime.Now;
             DateTime StartTime = DateTime.Now;
-            DateTime ExpectedEndTime = DateTime.Now.AddHours(TgtHours).AddMinutes(TgtBreak).AddSeconds(TgtBreakSec);
+            DateTime ExpectedEndTime = DateTime.Now.AddHours(TgtHours).AddMinutes(TgtBreakMinutes).AddSeconds(TgtBreakSeconds);
 
             TimeSpan maxSeconds = ExpectedEndTime - StartTime;
             TimeSpan remainingTime;
@@ -47,10 +51,12 @@ namespace WorkingtimeCounter
             {
                 while (ActTime <= ExpectedEndTime)
                 {
+
                     if (Reset)
                     {
+                        mFinished = false;
                         StartTime = DateTime.Now;
-                        ExpectedEndTime = DateTime.Now.AddHours(TgtHours).AddMinutes(TgtBreak).AddSeconds(TgtBreakSec);
+                        ExpectedEndTime = DateTime.Now.AddHours(TgtHours).AddMinutes(TgtBreakMinutes).AddSeconds(TgtBreakSeconds);
                         maxSeconds = ExpectedEndTime - StartTime;
                         Reset = false;
                     }
@@ -72,6 +78,18 @@ namespace WorkingtimeCounter
 
                 }
 
+                mFinished = true;
+
+                if (Reset)
+                {
+                    mFinished = false;
+                    StartTime = DateTime.Now;
+                    ExpectedEndTime = DateTime.Now.AddHours(TgtHours).AddMinutes(TgtBreakMinutes).AddSeconds(TgtBreakSeconds);
+                    maxSeconds = ExpectedEndTime - StartTime;
+                    Reset = false;
+                    ImageScale = 1;
+                }
+
                 await Task.Delay(10);
             }
         }
@@ -81,18 +99,40 @@ namespace WorkingtimeCounter
         {
             while (true)
             {
-                ImageRotationLeft += 1;
-                ImageRotationRight -= 1;
-                await Task.Delay(10);
+
+                if (!mFinished)
+                {
+                    ImageRotationLeft += 5;
+                    ImageRotationRight -= 5;
+                }
+
+                if (mFinished)
+                {
+                    ImageRotationLeft = 0;
+                    ImageRotationRight = 0;
+
+                    ImageScale += mScaleHelper;
+
+                    if (ImageScale >= 1.2)
+                    {
+                        mScaleHelper = -0.05;
+                    }
+                    if (ImageScale <= 0.8)
+                    {
+                        mScaleHelper = 0.05;
+                    }
+                }
+
+                await Task.Delay(20);
             }
         }
 
 
 
-            /// <summary>
-            /// Runs the Code and Updates the UI according the specified cycle time/>
-            /// </summary>
-            public void WPF_UpdateTasks()
+        /// <summary>
+        /// Runs the Code and Updates the UI according the specified cycle time/>
+        /// </summary>
+        public void WPF_UpdateTasks()
         {
             Task.Factory.StartNew(() => RunClockAsync());
             Task.Factory.StartNew(() => RotateImagesAsync());

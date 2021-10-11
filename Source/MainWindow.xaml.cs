@@ -14,10 +14,22 @@ namespace WorkingtimeCounter
         {
             InitializeComponent();
 
+            //Define Window Location
+            Rect desktopWorkingArea = SystemParameters.WorkArea;
+            Left = desktopWorkingArea.Right - Width;
+            Top = desktopWorkingArea.Bottom - Height;
+            taskBarItem.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Indeterminate;
+
+
+
             //Set DataContext for entire Stackpanel (or whatever needed)
             MyData.DataContext = LogicClassInstance;
 
-            //Start Clock Automatically
+            //Define StartUpValues
+            LogicClassInstance.TgtHours = 10;
+            LogicClassInstance.TgtBreakMinutes = 30;
+            LogicClassInstance.TgtBreakSeconds = 0;
+
             LogicClassInstance.WPF_UpdateTasks();
 
 
@@ -27,6 +39,11 @@ namespace WorkingtimeCounter
         {
             //Start Clock Automatically
             LogicClassInstance.Reset = true;
+        }
+
+        private void KeepOnTop_Click(object sender, RoutedEventArgs e)
+        {
+            Topmost ^= true;
         }
     }
 }

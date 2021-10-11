@@ -8,8 +8,14 @@
         Title="Workingtime Counter" 
         Height="180" Width="400"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen"
+        WindowStartupLocation="Manual"
+        ShowInTaskbar="True"
         Background="SteelBlue">
+
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo x:Name="taskBarItem"/>
+    </Window.TaskbarItemInfo>
+    
 
     <StackPanel x:Name="MyData" 
                 Orientation="Vertical" >
@@ -42,7 +48,7 @@
                    Foreground="LightGray"/>
 
             <TextBox x:Name="TgtBreak" 
-                     Text="{Binding TgtBreak, FallbackValue=30}"  
+                     Text="{Binding TgtBreakMinutes, FallbackValue=30}"  
                      HorizontalAlignment="Center" 
                      VerticalAlignment="Center"
                      FontSize="16"                   
@@ -60,6 +66,36 @@
                     FontFamily="Century Gothic"
                     Foreground="LightGray"
                     Click="Restart_Click">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="DarkGray" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="Border" Background="{TemplateBinding Background}" CornerRadius="3">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Orange" TargetName="Border" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            
+            <Border Width="5"/>
+
+            <Button x:Name="KeepOnTop"
+                    Content=" KeepOnTop "
+                    FontSize="10"    
+                    Margin="5"
+                    FontFamily="Century Gothic"
+                    Foreground="LightGray"
+                    Click="KeepOnTop_Click">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="DarkGray" />
@@ -108,18 +144,25 @@
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
 
-            <Image Source="/Images/icon.ico" RenderTransformOrigin="0.5,0.5" >
-                <Image.RenderTransform>
-                    <RotateTransform Angle="{Binding ImageRotationLeft, FallbackValue=0}" />
-                </Image.RenderTransform>
-            </Image>
+            <Border RenderTransformOrigin="0.5,0.5">
+                <Border.RenderTransform>
+                    <ScaleTransform ScaleX="{Binding ImageScale, FallbackValue=1}" 
+                                    ScaleY="{Binding ImageScale, FallbackValue=1}"/>
+                </Border.RenderTransform>
+                <Image Source="/Images/icon.ico" RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <RotateTransform Angle="{Binding ImageRotationLeft, FallbackValue=0}"/>
+                    </Image.RenderTransform>
+
+                </Image>
+            </Border>
 
 
             <Border Width="5"/>
 
             <ProgressBar x:Name="Progress"
                      HorizontalAlignment="Center" 
-                     VerticalAlignment="Center" 
+                     VerticalAlignment="Center"
                      Width="200"
                      Height="50"
                      Value="{Binding ProgressValue, FallbackValue=77}"
@@ -137,11 +180,21 @@
 
             <Border Width="5"/>
 
-            <Image Source="/Images/icon.ico" RenderTransformOrigin="0.5,0.5" >
-                <Image.RenderTransform>
-                    <RotateTransform Angle="{Binding ImageRotationRight, FallbackValue=0}" />
-                </Image.RenderTransform>
-            </Image>
+            <Border RenderTransformOrigin="0.5,0.5">
+                <Border.RenderTransform>
+                    <ScaleTransform ScaleX="{Binding ImageScale, FallbackValue=1}" 
+                                    ScaleY="{Binding ImageScale, FallbackValue=1}"/>
+                </Border.RenderTransform>
+                <Image Source="/Images/icon.ico" RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <RotateTransform Angle="{Binding ImageRotationRight, FallbackValue=0}"/>
+                    </Image.RenderTransform>
+
+                </Image>
+            </Border>
+
+
+
 
 
 
