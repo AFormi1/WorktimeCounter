@@ -31,6 +31,7 @@ namespace WorkingtimeCounter
 
 
         public string StartTimeString { get; set; }
+        public string EndTimeString { get; set; }
 
 
 
@@ -50,7 +51,7 @@ namespace WorkingtimeCounter
 
 
             StartTimeString = ActTime.ToShortTimeString();
-
+            EndTimeString = ExpectedEndTime.ToShortTimeString();
 
             double remainingSecondsPerc;
 
@@ -64,7 +65,8 @@ namespace WorkingtimeCounter
                         mFinished = false;
                         StartTime = DateTime.Now;
                         ExpectedEndTime = DateTime.Now.AddHours(TgtHours).AddMinutes(TgtBreakMinutes).AddSeconds(TgtBreakSeconds);
-                        maxSeconds = ExpectedEndTime - StartTime;
+                        EndTimeString = ExpectedEndTime.ToShortTimeString();
+                        maxSeconds = ExpectedEndTime - StartTime;                        
                         Reset = false;
                     }
 
@@ -78,6 +80,7 @@ namespace WorkingtimeCounter
                                      (maxSeconds.Hours * 60 * 60 + maxSeconds.Minutes * 60 + maxSeconds.Seconds);
 
                     ClockValue = $"{remainingTime.Hours}:{remainingTime.Minutes}:{remainingTime.Seconds}";
+                                      
 
                     ProgressValue = (100 - remainingSecondsPerc);
 
@@ -92,8 +95,8 @@ namespace WorkingtimeCounter
                     mFinished = false;
       
                     StartTime = DateTime.Parse(StartTimeString);
-
                     ExpectedEndTime = DateTime.Now.AddHours(TgtHours).AddMinutes(TgtBreakMinutes).AddSeconds(TgtBreakSeconds);
+                    EndTimeString = ExpectedEndTime.ToShortTimeString();
                     maxSeconds = ExpectedEndTime - StartTime;
                     Reset = false;
                     ImageScale = 1;
