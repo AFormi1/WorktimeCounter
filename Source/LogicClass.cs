@@ -30,6 +30,9 @@ namespace WorkingtimeCounter
         private double mScaleHelper = 0.05f;
 
 
+        public string StartTimeString { get; set; }
+
+
 
         /// <summary>
         /// Runs the Cycle Code until the specified limit and resets the start value when finished
@@ -39,11 +42,15 @@ namespace WorkingtimeCounter
         public async Task RunClockAsync()
         {
             DateTime ActTime = DateTime.Now;
-            DateTime StartTime = DateTime.Now;
+            DateTime StartTime = DateTime.Now.AddMinutes(-5);
             DateTime ExpectedEndTime = DateTime.Now.AddHours(TgtHours).AddMinutes(TgtBreakMinutes).AddSeconds(TgtBreakSeconds);
 
             TimeSpan maxSeconds = ExpectedEndTime - StartTime;
             TimeSpan remainingTime;
+
+
+            StartTimeString = ActTime.ToShortTimeString();
+
 
             double remainingSecondsPerc;
 
@@ -83,7 +90,9 @@ namespace WorkingtimeCounter
                 if (Reset)
                 {
                     mFinished = false;
-                    StartTime = DateTime.Now;
+      
+                    StartTime = DateTime.Parse(StartTimeString);
+
                     ExpectedEndTime = DateTime.Now.AddHours(TgtHours).AddMinutes(TgtBreakMinutes).AddSeconds(TgtBreakSeconds);
                     maxSeconds = ExpectedEndTime - StartTime;
                     Reset = false;

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WorkingtimeCounter"
         mc:Ignorable="d"
         Title="Workingtime Counter" 
-        Height="180" Width="400"
+        Height="180" Width="500"
         ResizeMode="NoResize"
         WindowStartupLocation="Manual"
         ShowInTaskbar="True"
@@ -23,6 +23,24 @@
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Center">
 
+            <Label Content="Startzeit:" 
+                   VerticalAlignment="Center"
+                   FontSize="16"                   
+                   FontFamily="Century Gothic"
+                   Foreground="LightGray"/>
+
+            <TextBox x:Name="StartTimeString" 
+                       Text="{Binding StartTimeString, FallbackValue=07:07}"
+                       HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                       FontSize="16"                   
+                       FontFamily="Century Gothic"
+                       Foreground="LightGray"
+                       BorderBrush="Transparent"
+                       Background="Transparent"/>
+
+            <Border Width="5"/>
+            
             <Label Content="Sollzeit [h]:" 
                    VerticalAlignment="Center"
                    FontSize="16"                   
@@ -57,6 +75,25 @@
                      BorderBrush="Transparent"
                      Background="Transparent"/>
 
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Center">
+
+            <Label Content="Restzeit:" 
+                   VerticalAlignment="Center"
+                   FontSize="16"                   
+                   FontFamily="Century Gothic"
+                   Foreground="DarkGray"/>
+
+            <Label x:Name="ClockValue" Content="{Binding ClockValue, FallbackValue=08:00:00}" 
+                   Margin="10" 
+                   HorizontalAlignment="Center" 
+                   VerticalAlignment="Center" 
+                   FontSize="16"                   
+                   FontFamily="Century Gothic"
+                   Foreground="DarkGray"/>
+
             <Border Width="5"/>
 
             <Button x:Name="Restart"
@@ -65,7 +102,39 @@
                     Margin="5"
                     FontFamily="Century Gothic"
                     Foreground="LightGray"
-                    Click="Restart_Click">
+                    Click="Restart_Click"
+                    Height="25">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Setter Property="Background" Value="DarkGray" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border x:Name="Border" Background="{TemplateBinding Background}" CornerRadius="3">
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="Orange" TargetName="Border" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Border Width="5"/>
+
+            <Button x:Name="KeepOnTop"
+                    Content=" KeepOnTop "
+                    FontSize="10"    
+                    Margin="5"
+                    FontFamily="Century Gothic"
+                    Foreground="LightGray"
+                    Click="KeepOnTop_Click"
+                    Height="25">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Background" Value="DarkGray" />
@@ -87,58 +156,6 @@
                 </Button.Style>
             </Button>
             
-            <Border Width="5"/>
-
-            <Button x:Name="KeepOnTop"
-                    Content=" KeepOnTop "
-                    FontSize="10"    
-                    Margin="5"
-                    FontFamily="Century Gothic"
-                    Foreground="LightGray"
-                    Click="KeepOnTop_Click">
-                <Button.Style>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Background" Value="DarkGray" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border x:Name="Border" Background="{TemplateBinding Background}" CornerRadius="3">
-                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="Orange" TargetName="Border" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Style>
-            </Button>
-
-
-
-
-        </StackPanel>
-
-        <StackPanel Orientation="Horizontal" 
-                    HorizontalAlignment="Center">
-
-            <Label Content="Restzeit:" 
-                   VerticalAlignment="Center"
-                   FontSize="16"                   
-                   FontFamily="Century Gothic"
-                   Foreground="DarkGray"/>
-
-            <Label x:Name="ClockValue" Content="{Binding ClockValue, FallbackValue=08:00:00}" 
-                   Margin="10" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center" 
-                   FontSize="16"                   
-                   FontFamily="Century Gothic"
-                   Foreground="DarkGray"/>
-
         </StackPanel>
 
 
