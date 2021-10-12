@@ -63,15 +63,17 @@ namespace WorkingtimeCounter
 
                     if (Reset)
                     {
-                        mFinished = false;
-
+                        
                         //Textzelle in Wert uebergeben
                         StartTime = DateTime.Parse(StartTimeString);
                         ExpectedEndTime = StartTime.AddHours(TgtHours).AddMinutes(TgtBreakMinutes).AddSeconds(TgtBreakSeconds);
                         EndTimeString = ExpectedEndTime.ToShortTimeString();
                         maxSeconds = ExpectedEndTime - StartTime;
+                        mFinished = false;
                         Reset = false;
                         ImageScale = 1;
+                        ImageRotationLeft = 0;
+                        ImageRotationRight = 0;
                     }
 
 
@@ -92,8 +94,7 @@ namespace WorkingtimeCounter
 
 
                 if (Reset)
-                {
-                    mFinished = false;
+                {                    
 
                     //Textzelle in Wert uebergeben
                     StartTime = DateTime.Parse(StartTimeString);
@@ -101,10 +102,11 @@ namespace WorkingtimeCounter
                     EndTimeString = ExpectedEndTime.ToShortTimeString();
                     maxSeconds = ExpectedEndTime - StartTime;
                     Reset = false;
+                    mFinished = false;
                     ImageScale = 1;
+                    ImageRotationLeft = 0;
+                    ImageRotationRight = 0;
                 }
-
-
 
                 mFinished = true;
 
@@ -125,7 +127,7 @@ namespace WorkingtimeCounter
                     ImageRotationRight -= 5;
                 }
 
-                if (mFinished)
+                if (mFinished || Reset)
                 {
                     ImageRotationLeft = 0;
                     ImageRotationRight = 0;
