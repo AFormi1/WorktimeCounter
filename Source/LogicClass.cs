@@ -50,6 +50,7 @@ namespace WorkingtimeCounter
             TimeSpan remainingTime;
 
 
+            //Aktuelle Zeit in Textfeld eintragen
             StartTimeString = ActTime.ToShortTimeString();
             EndTimeString = ExpectedEndTime.ToShortTimeString();
 
@@ -63,18 +64,19 @@ namespace WorkingtimeCounter
                     if (Reset)
                     {
                         mFinished = false;
-                        StartTime = DateTime.Now;
-                        ExpectedEndTime = DateTime.Now.AddHours(TgtHours).AddMinutes(TgtBreakMinutes).AddSeconds(TgtBreakSeconds);
+
+                        //Textzelle in Wert uebergeben
+                        StartTime = DateTime.Parse(StartTimeString);
+                        ExpectedEndTime = StartTime.AddHours(TgtHours).AddMinutes(TgtBreakMinutes).AddSeconds(TgtBreakSeconds);
                         EndTimeString = ExpectedEndTime.ToShortTimeString();
-                        maxSeconds = ExpectedEndTime - StartTime;                        
+                        maxSeconds = ExpectedEndTime - StartTime;
                         Reset = false;
+                        ImageScale = 1;
                     }
 
 
                     ActTime = DateTime.Now;
-
                     remainingTime = ExpectedEndTime - ActTime;
-
 
                     remainingSecondsPerc = (remainingTime.Hours * 60 * 60 + remainingTime.Minutes * 60 + remainingTime.Seconds) * 100 /
                                      (maxSeconds.Hours * 60 * 60 + maxSeconds.Minutes * 60 + maxSeconds.Seconds);
@@ -88,19 +90,24 @@ namespace WorkingtimeCounter
 
                 }
 
-                mFinished = true;
 
                 if (Reset)
                 {
                     mFinished = false;
-      
+
+                    //Textzelle in Wert uebergeben
                     StartTime = DateTime.Parse(StartTimeString);
-                    ExpectedEndTime = DateTime.Now.AddHours(TgtHours).AddMinutes(TgtBreakMinutes).AddSeconds(TgtBreakSeconds);
+                    ExpectedEndTime = StartTime.AddHours(TgtHours).AddMinutes(TgtBreakMinutes).AddSeconds(TgtBreakSeconds);
                     EndTimeString = ExpectedEndTime.ToShortTimeString();
                     maxSeconds = ExpectedEndTime - StartTime;
                     Reset = false;
                     ImageScale = 1;
                 }
+
+
+
+                mFinished = true;
+
 
                 await Task.Delay(10);
             }
