@@ -83,7 +83,12 @@ namespace WorkingtimeCounter
                     remainingSecondsPerc = (remainingTime.Hours * 60 * 60 + remainingTime.Minutes * 60 + remainingTime.Seconds) * 100 /
                                      (maxSeconds.Hours * 60 * 60 + maxSeconds.Minutes * 60 + maxSeconds.Seconds);
 
-                    ClockValue = $"{remainingTime.Hours}:{remainingTime.Minutes}:{remainingTime.Seconds}";
+
+
+
+
+
+                    ClockValue = ClockText(remainingTime);// $"{remainingTime.Hours}:{remainingTime.Minutes}:{remainingTime.Seconds}";
                                       
 
                     ProgressValue = (100 - remainingSecondsPerc);
@@ -113,6 +118,24 @@ namespace WorkingtimeCounter
 
                 await Task.Delay(10);
             }
+        }
+
+
+        public string ClockText(TimeSpan timeIn)
+        {
+   
+           
+            string hour;
+            string minute;
+            string second;
+
+            if (timeIn.Hours < 10) { hour = "0" + timeIn.Hours.ToString(); } else { hour = timeIn.Hours.ToString(); }
+            if (timeIn.Minutes < 10) { minute = "0" + timeIn.Minutes.ToString(); } else { minute = timeIn.Minutes.ToString(); }
+            if (timeIn.Seconds < 10) { second = "0" + timeIn.Seconds.ToString(); } else { second = timeIn.Seconds.ToString(); }
+
+
+            return hour + ":" + minute + ":" + second;;
+
         }
 
 
